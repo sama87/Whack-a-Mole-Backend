@@ -1,0 +1,10 @@
+post create user - username and password (Strings) - Registration
+get login - username and password (String) - Login
+
+get /play/scores/easy - username and scores (String, int) - gets top 10
+get /play/scores/medium - username and scores (String, int) - gets top 10
+get /play/scores/hard - username and scores (String, int) - gets top 10
+
+post /play/users/easy - username, diffcutly, scores (String, String, int) - JWT semicolon(header bearer)
+post /play/users/medium - username, difficulty, scores (String, String, int)
+post /play/users/hard - username, difficulty, scores (String, String, int)
