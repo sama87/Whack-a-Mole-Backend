@@ -11,7 +11,7 @@ import com.cognixia.jump.model.User;
 public interface UserRepository extends JpaRepository<User, Integer>{
 	
 	//creates a user in the database
-	public User createNewUser (User user);
+	//public User newUser (User user);
 	
-	public Optional<User> findByUsername(String username);
+	public Optional<User> findByUserName(String username);
 }

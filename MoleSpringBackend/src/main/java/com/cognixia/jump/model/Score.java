@@ -17,15 +17,15 @@ public class Score {
 	private int scoreID;
 	
 	@NotBlank
-	@Column(name = "Difficulty", columnDefinition = "varchar(10) DEFAULT 'Difficulty'", nullable = false)
+	@Column(name = "difficulty", columnDefinition = "varchar(10) DEFAULT 'Difficulty'", nullable = false)
 	private String difficulty;
 	
 	@NotBlank
-	@Column(name = "Score Value", columnDefinition = "int DEFAULT 0")
+	@Column(name = "scoreValue")
 	private int scoreValue;	
 	
-	@ManyToOne
-	@JoinColumn(name = "ID")
+	@ManyToOne()
+	@JoinColumn(name = "userID")
 	private User user;
 	
 	public Score () {
@@ -45,13 +45,6 @@ public class Score {
 	 */
 	public int getScoreID() {
 		return scoreID;
-	}
-
-	/**
-	 * @param scoreID the scoreID to set
-	 */
-	public void setScoreID(int scoreID) {
-		this.scoreID = scoreID;
 	}
 
 	/**
@@ -92,7 +85,9 @@ public class Score {
 	/**
 	 * @param user the user to set
 	 */
-	public void setUser(User user) {
-		this.user = user;
-	}	
+	public void setUser(User userID) {
+		this.user = userID;
+	}
+
+	
 }

@@ -15,7 +15,7 @@ public class ScoreService {
 	ScoreRepository repo;
 	
 	//get all scores
-	public List<Score> getAllSCores(){
+	public List<Score> getAllScores(){
 		
 		return repo.findAll();
 	}
@@ -25,8 +25,17 @@ public class ScoreService {
 		return repo.getScoresByDifficulty(difficulty);
 	}
 	
-	public List<Score> getScoresByIdAndDifficulty(int id, String difficulty){
-		
-		return repo.getScoresByIdAndDifficulty(id, difficulty);
-	}
+//	public List<Score> getScoresByIdAndDifficulty(int id, String difficulty){
+//		
+//		return repo.getScoresByIdAndDifficulty(id, difficulty);
+//	}
+	
+//	public Score getScoreForUser(int id, int value) {
+//		
+//		Score userScore = repo.getReferenceById(id);
+//		
+//		userScore.setScoreValue(value);
+//		
+//		return repo.save(userScore);
+//	}
 }

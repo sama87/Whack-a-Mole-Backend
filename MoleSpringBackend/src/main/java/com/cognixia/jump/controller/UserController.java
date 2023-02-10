@@ -26,7 +26,7 @@ public class UserController {
 	public ResponseEntity<?> createUser(@Valid @RequestBody User user){
 		
 		//Instantiate a user
-		User created = service.createNewUser(user);
+		User created = service.newUser(user);
 		
 		//return a response in this post mapping the user that was created within the body of the request
 		return ResponseEntity.status(200).body(created);

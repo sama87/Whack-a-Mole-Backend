@@ -17,7 +17,7 @@ public class UserService {
 	@Autowired
 	UserRepository repo;
 	
-	public User createNewUser (User user) {
+	public User newUser (User user) {
 		
 		User newUser = new User(user.getUserName(), user.getPassword());
 		repo.save(newUser);
