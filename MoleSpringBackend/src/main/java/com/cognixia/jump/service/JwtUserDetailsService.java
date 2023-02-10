@@ -7,22 +7,25 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.cognixia.jump.model.User;
+import com.cognixia.jump.repository.UserRepository;
+
 @Service
-public class userDetailsService implements UserDetailsService {
+public class JwtUserDetailsService implements UserDetailsService {
 	
 	//@Autowired
-	//repository repo
+	UserRepository repo;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
-		Optional<User> userFound = repo.//Insert method used
+		Optional<User> userFound = repo.findByUsername(username);//Insert method used
 				
 		if(userFound.isEmpty() ) {
 			throw new UsernameNotFoundException(username);
 		}
 		
-		return new //UserDetails(userFound.get() );
+		return new JwtUserDetails(userFound.get() );
 	}
 
 }
