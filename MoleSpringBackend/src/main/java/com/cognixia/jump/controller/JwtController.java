@@ -31,6 +31,9 @@ public class JwtController {
 	public ResponseEntity<?> createJwtToken(@RequestBody JwtRequest request) throws Exception {
 		
 		try {
+			System.out.println("******************");
+			System.out.println(request.getUsername());
+			System.out.println(request.getPassword());
 			authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword() )
 					);
@@ -38,6 +41,10 @@ public class JwtController {
 		
 		catch (BadCredentialsException e) {
 			throw new Exception("Incorrect username or password");
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			throw new Exception("Other problem");
 		}
 		
 		

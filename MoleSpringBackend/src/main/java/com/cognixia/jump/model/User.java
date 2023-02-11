@@ -28,6 +28,8 @@ public class User {
 	@OneToMany(mappedBy = "user") // !!this will the name to be passed as reference within the repository!!
 	private List<Score> scores;
 	
+	private Boolean isEnabled = true;
+	
 	public User() {
 		ID = -1;
 		userName = "No such User";
@@ -87,6 +89,11 @@ public class User {
 	 */
 	public void setScores(List<Score> scores) {
 		this.scores = scores;
+	}
+
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return true;
 	}
 
 	

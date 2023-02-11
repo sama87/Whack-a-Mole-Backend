@@ -23,7 +23,7 @@ public class JwtUserDetails implements UserDetails {
 	public JwtUserDetails(User user) {
 		this.username = user.getUserName();
 		this.password = user.getPassword();
-		//this.enabled = user.isEnabled(); 
+		this.enabled = user.isEnabled(); 
 		
 		//for now there are only users. May need refactoring if we include admins later
 		this.authorities = Arrays.asList(new SimpleGrantedAuthority("user") );
