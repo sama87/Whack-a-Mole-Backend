@@ -18,25 +18,23 @@ public class User {
 	private Integer ID;
 	
 	@NotBlank(message = "Enter a username")
-	@Column(name = "userName", columnDefinition = "varchar(10) DEFAULT 'Username'", nullable = false)
+	@Column(name = "username", columnDefinition = "varchar(10) DEFAULT 'Username'", nullable = false)
 	private String userName;
 	
 	@NotBlank(message = "Enter your password")
-	@Column(name = "Password", columnDefinition = "varchar(50) DEFAULT 'Password'", nullable = false)
+	@Column(name = "password", columnDefinition = "varchar(50) DEFAULT 'Password'", nullable = false)
 	private String password;
 	
 	@OneToMany(mappedBy = "user") // !!this will the name to be passed as reference within the repository!!
 	private List<Score> scores;
 	
 	public User() {
-		ID = -1;
-		userName = "No such User";
-		password = "N/A";
+		
 	}
 
-	public User(String userName, String password) {
+	public User(String username, String password) {
 		super();
-		this.userName = userName;
+		this.userName = username;
 		this.password = password;
 	}
 	

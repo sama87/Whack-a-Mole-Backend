@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.cognixia.jump.model.User;
@@ -17,11 +18,10 @@ public class UserService {
 	@Autowired
 	UserRepository repo;
 	
-	public User newUser (User user) {
+	public ResponseEntity<?> newUser (String username, String password) {
 		
-		User newUser = new User(user.getUserName(), user.getPassword());
-		repo.save(newUser);
-		return newUser;
+		User newUser = new User(username, password);
+		return ResponseEntity.status(200).body(repo.save(newUser));
 	}
 	
 	//for admin?

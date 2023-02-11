@@ -1,5 +1,7 @@
 package com.cognixia.jump.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,15 +23,21 @@ public class UserController {
 	@Autowired
 	UserService service;
 	
+	@GetMapping("/user")
+	public List<User> printAllUsers(){
+		
+		return service.getUsers();
+	}
+	
 	//Creating a new user
 	@PostMapping("/user")
 	public ResponseEntity<?> createUser(@Valid @RequestBody User user){
 		
 		//Instantiate a user
-		User created = service.newUser(user);
+		
 		
 		//return a response in this post mapping the user that was created within the body of the request
-		return ResponseEntity.status(200).body(created);
+		return service.newUser(user.getUserName(), user.getPassword());
 	}
 	
 	@GetMapping("/user/{id}")

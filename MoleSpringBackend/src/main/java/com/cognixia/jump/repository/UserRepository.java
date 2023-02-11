@@ -12,6 +12,5 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 	
 	//creates a user in the database
 	//public User newUser (User user);
-	
 	public Optional<User> findByUserName(String username);
 }
