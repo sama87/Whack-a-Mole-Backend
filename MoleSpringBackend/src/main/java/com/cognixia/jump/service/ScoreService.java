@@ -25,17 +25,17 @@ public class ScoreService {
 		return repo.getScoresByDifficulty(difficulty);
 	}
 	
-//	public List<Score> getScoresByIdAndDifficulty(int id, String difficulty){
-//		
-//		return repo.getScoresByIdAndDifficulty(id, difficulty);
-//	}
-	
-//	public Score getScoreForUser(int id, int value) {
-//		
-//		Score userScore = repo.getReferenceById(id);
-//		
-//		userScore.setScoreValue(value);
-//		
-//		return repo.save(userScore);
-//	}
+	public List<Score> getScoresByIdAndDifficulty(int id, String difficulty){
+		
+		return repo.getScoresByIdAndDifficulty(id, difficulty);
+	}
+//	
+	public Score getScoreForUser(int id, int value) {
+		
+		Score userScore = repo.getReferenceById(id);
+		
+		userScore.setScoreValue(value);
+		
+		return repo.save(userScore);
+	}
 }

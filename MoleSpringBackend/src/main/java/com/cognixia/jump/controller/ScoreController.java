@@ -34,20 +34,20 @@ public class ScoreController {
 		return service.getScoresByDifficulty(difficulty);
 	}
 	
-//	//needs to be validate first
-//	@GetMapping("/allscores/{id}/{difficulty}")
-//	public ResponseEntity<?> getScoresByIdAndDifficulty(@PathVariable("id") int id, @PathVariable("difficulty") String difficulty){
-//		
-//		return ResponseEntity.status(200).body(service.getScoresByIdAndDifficulty(id, difficulty));
-//	}
+	//needs to be validate first
+	@GetMapping("/allscores/{id}/{difficulty}")
+	public ResponseEntity<?> getScoresByIdAndDifficulty(@PathVariable("id") int id, @PathVariable("difficulty") String difficulty){
+		
+		return ResponseEntity.status(200).body(service.getScoresByIdAndDifficulty(id, difficulty));
+	}
 	
-//	@PutMapping("/allscores/{id}/{score}")
-//	public ResponseEntity<?> getScoreForUser(@PathVariable("id") int id, @PathVariable("score") int scoreValue) {
-//		
-//		Score setScore = new Score();
-//		
-//		setScore = service.getScoreForUser(id, scoreValue);
-//		
-//		return ResponseEntity.status(200).body(setScore);
-//	}
+	@PutMapping("/allscores/{id}/{score}")
+	public ResponseEntity<?> getScoreForUser(@PathVariable("id") int id, @PathVariable("score") int scoreValue) {
+		
+		Score setScore = new Score();
+		
+		setScore = service.getScoreForUser(id, scoreValue);
+		
+		return ResponseEntity.status(200).body(setScore);
+	}
 }
