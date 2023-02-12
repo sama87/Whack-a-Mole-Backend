@@ -23,4 +23,5 @@
 hs_err_pid*
 
 #local configurations
+application.properties
 application-local-dev.properties
