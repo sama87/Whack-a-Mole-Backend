@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,18 +35,18 @@ public class ScoreController {
 	
 	//needs to be validate first
 	@GetMapping("/allscores/{id}/{difficulty}")
-	public ResponseEntity<?> getScoresByIdAndDifficulty(@PathVariable("id") int id, @PathVariable("difficulty") String difficulty){
+	public ResponseEntity<?> getScoresByIdAndDifficulty(@Valid @PathVariable("id") int id, @PathVariable("difficulty") String difficulty){
 		
 		return ResponseEntity.status(200).body(service.getScoresByIdAndDifficulty(id, difficulty));
 	}
 	
-	@PutMapping("/allscores/{id}/{score}")
-	public ResponseEntity<?> getScoreForUser(@PathVariable("id") int id, @PathVariable("score") int scoreValue) {
-		
-		Score setScore = new Score();
-		
-		setScore = service.getScoreForUser(id, scoreValue);
-		
-		return ResponseEntity.status(200).body(setScore);
-	}
+//	@PutMapping("/allscores/{id}/{score}")
+//	public ResponseEntity<?> getScoreForUser(@PathVariable("id") int id, @PathVariable("score") int scoreValue) {
+//		
+//		Score setScore = new Score();
+//		
+//		setScore = service.getScoreForUser(id, scoreValue);
+//		
+//		return ResponseEntity.status(200).body(setScore);
+//	}
 }
