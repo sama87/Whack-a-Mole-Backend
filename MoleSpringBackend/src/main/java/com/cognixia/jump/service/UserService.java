@@ -3,6 +3,7 @@ package com.cognixia.jump.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -44,5 +45,14 @@ public class UserService {
 			
 			return new User();
 		}
+	}
+	
+	public Boolean checkUserExists(String name) {
+		User found = repo.getByUserName(name);
+		
+		if (found != null) {
+			return true;
+		}
+		else return false;
 	}
 }

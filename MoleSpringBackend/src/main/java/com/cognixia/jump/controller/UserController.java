@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cognixia.jump.exception.UsernameTakenException;
 import com.cognixia.jump.model.User;
 import com.cognixia.jump.service.UserService;
 
@@ -31,11 +32,16 @@ public class UserController {
 	
 	//Creating a new user
 	@PostMapping("/user")
-	public ResponseEntity<?> createUser(@Valid @RequestBody User user){
+	public ResponseEntity<?> createUser(@Valid @RequestBody User user) throws Exception{
 		
 		//Instantiate a user
 		
+		//************************************************
 		//In body, "userName" make sure to capitalize N
+		//************************************************
+		if(service.checkUserExists(user.getUserName() ) == true ) throw new  UsernameTakenException("Username isn't available");
+		
+
 		//return a response in this post mapping the user that was created within the body of the request
 		return service.newUser(user.getUserName(), user.getPassword());
 	}
