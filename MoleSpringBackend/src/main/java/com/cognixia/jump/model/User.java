@@ -38,6 +38,7 @@ public class User {
 		super();
 		this.userName = username;
 		this.password = password;
+		this.isEnabled = true;
 	}
 	
 	/**

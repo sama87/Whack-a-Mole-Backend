@@ -38,8 +38,11 @@ public class SecurityConfiguration {
 		
 		http.csrf().disable()
 			.authorizeRequests()
+			.antMatchers("/api/allscores/{id}/{difficulty}").authenticated()
+			.antMatchers("/api/allscores/{difficulty}").permitAll()
+			.antMatchers("/api/allscores").permitAll()
 			.antMatchers("/authenticate").permitAll()
-//			.antMatchers("/api/user").permitAll()
+			.antMatchers("/api/user").permitAll()
 			.anyRequest().authenticated()
 //			.anyRequest().permitAll()
 			.and()

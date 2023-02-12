@@ -35,7 +35,7 @@ public class UserController {
 		
 		//Instantiate a user
 		
-		
+		//In body, "userName" make sure to capitalize N
 		//return a response in this post mapping the user that was created within the body of the request
 		return service.newUser(user.getUserName(), user.getPassword());
 	}
