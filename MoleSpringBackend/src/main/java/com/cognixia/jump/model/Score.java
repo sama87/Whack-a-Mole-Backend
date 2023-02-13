@@ -1,5 +1,7 @@
 package com.cognixia.jump.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,11 +12,13 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 
 @Entity
-public class Score {
+public class Score implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	
 	@Id //primary key
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int scoreID;
+	private Integer scoreID;
 	
 	@NotBlank
 	@Column(name = "difficulty", columnDefinition = "varchar(10) DEFAULT 'Difficulty'", nullable = false)
@@ -24,8 +28,8 @@ public class Score {
 	@Column(name = "scoreValue")
 	private int scoreValue;	
 	
-	@ManyToOne()
-	@JoinColumn(name = "userID")
+	@ManyToOne
+	@JoinColumn(name = "userID", nullable = false, referencedColumnName = "ID")
 	private User user;
 	
 	public Score () {
@@ -43,7 +47,7 @@ public class Score {
 	/**
 	 * @return the scoreID
 	 */
-	public int getScoreID() {
+	public Integer getScoreID() {
 		return scoreID;
 	}
 

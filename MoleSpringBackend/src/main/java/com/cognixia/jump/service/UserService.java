@@ -3,14 +3,19 @@ package com.cognixia.jump.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
+import com.cognixia.jump.exception.UsernameTakenException;
+import com.cognixia.jump.model.JwtRequest;
+import com.cognixia.jump.model.JwtResponse;
 import com.cognixia.jump.model.User;
 import com.cognixia.jump.repository.UserRepository;
+import com.cognixia.jump.util.JwtUtil;
 
 @Service
 public class UserService {
@@ -19,10 +24,25 @@ public class UserService {
 	@Autowired
 	UserRepository repo;
 	
-	public ResponseEntity<?> newUser (String username, String password) {
+	@Autowired
+	UserDetailsService userDetailsService;
+	
+	@Autowired
+	JwtUtil jwtUtil;
+	
+	public ResponseEntity<?> newUser (User user) throws UsernameTakenException {
 		
-		User newUser = new User(username, password);
-		return ResponseEntity.status(200).body(repo.save(newUser));
+		if(checkUserExists(user.getUserName() ) == true ) throw new  UsernameTakenException("Username isn't available");
+		
+		repo.save(user);
+//		
+		JwtRequest forNewUser = new JwtRequest(user.getUserName(), user.getPassword());
+		
+		final UserDetails newUser = userDetailsService.loadUserByUsername(forNewUser.getUsername());
+		
+		final String jwt = jwtUtil.generateTokens(newUser);
+		
+		return ResponseEntity.status(201).body(new JwtResponse(jwt));
 	}
 	
 	//for admin?

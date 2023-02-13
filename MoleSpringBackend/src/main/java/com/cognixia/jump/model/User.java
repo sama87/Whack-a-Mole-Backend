@@ -1,7 +1,9 @@
 package com.cognixia.jump.model;
 
+import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,8 +12,12 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
-public class User {
+public class User implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	
 	@Id //primary key
 	@GeneratedValue(strategy = GenerationType.IDENTITY) //autoincrements
@@ -25,7 +31,7 @@ public class User {
 	@Column(name = "password", columnDefinition = "varchar(50) DEFAULT 'Password'", nullable = false)
 	private String password;
 	
-	@OneToMany(mappedBy = "user") // !!this will the name to be passed as reference within the repository!!
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL) // !!this will the name to be passed as reference within the repository!!
 	private List<Score> scores;
 	
 	private Boolean isEnabled = true;

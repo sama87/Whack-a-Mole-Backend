@@ -25,11 +25,11 @@ public class ScoreService {
 		return repo.getScoresByDifficulty(difficulty);
 	}
 	
-	public List<Score> getScoresByIdAndDifficulty(int id, String difficulty){
+	public List<Score> getScoresByUsernameAndDifficulty(String username, String difficulty){
 		
-		return repo.getScoresByIdAndDifficulty(id, difficulty);
+		return repo.getScoresByUsernameAndDifficulty(username, difficulty);
 	}
-//	
+	
 	public Score getScoreForUser(int id, int value) {
 		
 		Score userScore = repo.getReferenceById(id);

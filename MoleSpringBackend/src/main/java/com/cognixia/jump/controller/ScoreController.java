@@ -34,10 +34,10 @@ public class ScoreController {
 	}
 	
 	//needs to be validate first
-	@GetMapping("/allscores/{id}/{difficulty}")
-	public ResponseEntity<?> getScoresByIdAndDifficulty(@Valid @PathVariable("id") int id, @PathVariable("difficulty") String difficulty){
+	@GetMapping("/allscores/{username}/{difficulty}")
+	public ResponseEntity<?> getScoresByIdAndDifficulty(@Valid @PathVariable("username") String username, @PathVariable("difficulty") String difficulty){
 		
-		return ResponseEntity.status(200).body(service.getScoresByIdAndDifficulty(id, difficulty));
+		return ResponseEntity.status(200).body(service.getScoresByUsernameAndDifficulty(username, difficulty));
 	}
 	
 //	@PutMapping("/allscores/{id}/{score}")
