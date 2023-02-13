@@ -1,5 +1,7 @@
 package com.cognixia.jump.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 
 import javax.persistence.Column;
@@ -30,8 +32,11 @@ public class Score implements Serializable{
 	
 //	@NotBlank
 //	@Column(name = "score_value", nullable = false)
+
+	@JsonProperty("score")
 	public Integer scoreValue;
 
+	public String username;
 	public Score() {
 	}
 

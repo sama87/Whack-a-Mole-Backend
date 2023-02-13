@@ -18,7 +18,7 @@ import javax.validation.constraints.NotBlank;
 public class User implements Serializable {
 	public User(String username, String password, List<Score> scores) {
 //		this.id = id;
-		this.userName = username;
+		this.username = username;
 		this.password = password;
 		this.enabled = true;
 		this.scores = scores;
@@ -32,7 +32,7 @@ public class User implements Serializable {
 	
 //	@Column(unique = true, nullable = false)
 //	@NotBlank
-	public String userName;
+	public String username;
 	
 //	@Column(nullable = false)
 //	@NotBlank
@@ -48,7 +48,7 @@ public class User implements Serializable {
 	}
 	
 	public User(String username, String password) {
-		this.userName = username;
+		this.username = username;
 		this.password = password;
 		this.enabled = true;
 	}
@@ -58,7 +58,7 @@ public class User implements Serializable {
 //	}
 //
 	public String getUsername() {
-		return userName;
+		return username;
 	}
 //
 //	public void setUsername(String username) {
