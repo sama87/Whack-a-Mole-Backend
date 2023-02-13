@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<?> usernameTakenException(UsernameTakenException exc, WebRequest request){
 		ErrorDetails errorDetails = new ErrorDetails(new Date(), exc.getMessage(), request.getDescription(false) );
 		
-		return ResponseEntity.status(401).body(errorDetails);//409 conflict
+		return ResponseEntity.status(409).body(errorDetails);//409 conflict
 	}
 
 }

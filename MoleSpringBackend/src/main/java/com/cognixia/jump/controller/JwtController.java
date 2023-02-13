@@ -27,7 +27,7 @@ public class JwtController {
 	@Autowired
 	JwtUtil jwtUtil;
 	
-	@PostMapping("/authenticate")
+	@PostMapping("/login")
 	public ResponseEntity<?> createJwtToken(@RequestBody JwtRequest request) throws Exception {
 		
 		try {
@@ -48,7 +48,7 @@ public class JwtController {
 	
 		final String jwt = jwtUtil.generateTokens(userDetails);
 		
-		return ResponseEntity.status(201).body( new JwtResponse(jwt));
+		return ResponseEntity.status(200).body( new JwtResponse(jwt));
 	}
 }
 

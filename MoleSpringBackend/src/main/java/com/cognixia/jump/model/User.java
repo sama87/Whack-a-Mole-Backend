@@ -10,97 +10,79 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
+@Table(name = "users")
 @Entity
-public class User implements Serializable{
-	
-	private static final long serialVersionUID = 1L;
-	
-	@Id //primary key
-	@GeneratedValue(strategy = GenerationType.IDENTITY) //autoincrements
-	private Integer ID;
-	
-	@NotBlank(message = "Enter a username")
-	@Column(name = "username", columnDefinition = "varchar(10) DEFAULT 'Username'", nullable = false)
-	private String userName;
-	
-	@NotBlank(message = "Enter your password")
-	@Column(name = "password", columnDefinition = "varchar(50) DEFAULT 'Password'", nullable = false)
-	private String password;
-	
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL) // !!this will the name to be passed as reference within the repository!!
-	private List<Score> scores;
-	
-	private Boolean isEnabled = true;
-	
-	public User() {
-		
-	}
-
-	public User(String username, String password) {
-		super();
+public class User implements Serializable {
+	public User(String username, String password, List<Score> scores) {
+//		this.id = id;
 		this.userName = username;
 		this.password = password;
-		this.isEnabled = true;
-	}
-	
-	/**
-	 * @return the iD
-	 */
-	public Integer getID() {
-		return ID;
-	}
-
-	/**
-	 * @return the userName
-	 */
-	public String getUserName() {
-		return userName;
-	}
-
-	/**
-	 * @param userName the userName to set
-	 */
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	/**
-	 * @return the password
-	 */
-	public String getPassword() {
-		return password;
-	}
-
-	/**
-	 * @param password the password to set
-	 */
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	/**
-	 * @return the scores
-	 */
-	public List<Score> getScores() {
-		return scores;
-	}
-
-	/**
-	 * @param scores the scores to set
-	 */
-	public void setScores(List<Score> scores) {
+		this.enabled = true;
 		this.scores = scores;
 	}
 
-	public boolean isEnabled() {
-		// TODO Auto-generated method stub
-		return true;
+//	private static final long serialVerisionUID = 1L;
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	public Long id;
+	
+//	@Column(unique = true, nullable = false)
+//	@NotBlank
+	public String userName;
+	
+//	@Column(nullable = false)
+//	@NotBlank
+	public String password;
+
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	public List<Score> scores;
+
+//	@Column(columnDefinition = "boolean default true")
+	public boolean enabled;
+
+	public User() {
+	}
+	
+	public User(String username, String password) {
+		this.userName = username;
+		this.password = password;
+		this.enabled = true;
 	}
 
+//	public Long getId() {
+//		return id;
+//	}
+//
+	public String getUsername() {
+		return userName;
+	}
+//
+//	public void setUsername(String username) {
+//		this.username = username;
+//	}
+//
+	public String getPassword() {
+		return password;
+	}
+//
+//	public void setPassword(String password) {
+//		this.password = password;
+//	}
+//
+	public boolean isEnabled() {
+		return enabled;
+	}
+//
+//	public void setEnabled(boolean enabled) {
+//		this.enabled = enabled;
+//	}
 	
-		
+
+	
+	
+
 }
