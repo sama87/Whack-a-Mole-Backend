@@ -13,6 +13,9 @@ import javax.persistence.Table;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+
 @Table(name = "users")
 @Entity
 public class User implements Serializable {
@@ -44,7 +47,7 @@ public class User implements Serializable {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	public List<Score> scores;
 
-//	@Column(columnDefinition = "boolean default true")
+	@Column(columnDefinition = "boolean default true")
 	public boolean enabled;
 	
 	public User() {

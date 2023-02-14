@@ -91,6 +91,9 @@ public class MainController {
 
 		ArrayList<Score> scores = new ArrayList<>();
 		if ((null != user.username) && (null != user.password)) {
+			if (userRepo.findByUsername(user.username).isPresent()) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username "+user.username+" already exists");
+			}
 			userRepo.save(new User(user.username, user.password, scores));
 			JwtRequest forNewUser = new JwtRequest(user.username, user.password);
 			final UserDetails newUser = userDetailsService.loadUserByUsername(forNewUser.getUsername());

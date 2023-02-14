@@ -1,5 +1,9 @@
 package com.cognixia.jump.model;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 
 import javax.persistence.Entity;
@@ -23,8 +27,11 @@ public class Score implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Size(min = 1)
 	public Long id;
+
 	
 	@Schema(description = "Relationship with the User Entity - ManyToOne")
+
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
 	public User user;
@@ -34,6 +41,7 @@ public class Score implements Serializable{
 	@Schema(description = "Difficulty of Whack-a-Mole", example = "easy, medium, hard")
 	public String difficulty;
 	
+
 //	@NotBlank
 //	@Column(name = "score_value", nullable = false)
 	@Schema(description = "Can be a positive or negative integer")
