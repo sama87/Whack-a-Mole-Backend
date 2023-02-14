@@ -5,11 +5,17 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,7 +43,15 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @CrossOrigin("*")
 @RestController
 public class MainController {
-
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurerAdapter() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**").allowedOrigins("*");
+            }
+        };
+    }
 //	Jwt jwt = new Jwt("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9" + ".eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ" + ".SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c");
 //	String username = "miguel";
 	//	String password = "hashed";
@@ -146,7 +160,9 @@ public class MainController {
 	@ApiResponse(responseCode = "400", description = "Bad Request")
 	@CrossOrigin("*")
 	@PostMapping("/score")
-	ResponseEntity<?> submitScore(@RequestBody ScoreDTO score, @RequestHeader(HttpHeaders.AUTHORIZATION) String headers) {
+	ResponseEntity<?> submitScore(@RequestBody ScoreDTO score,
+	                              @RequestHeader(HttpHeaders.AUTHORIZATION)
+	                              String headers) {
 		String jwtHeader = headers.split(" ")[1];
 		System.out.println("jwtHeader = " + jwtHeader);
 //		if (jwtHeader.equals(this.jwt.jwt)) {

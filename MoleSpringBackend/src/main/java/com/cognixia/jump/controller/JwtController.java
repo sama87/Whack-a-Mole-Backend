@@ -7,6 +7,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,7 +30,9 @@ public class JwtController {
 	
 	@Autowired
 	JwtUtil jwtUtil;
-	
+
+
+	@CrossOrigin("*")
 	@Operation(summary = "Authenticates login information",
 			description = "Gets username and password credentials from the login endpoint. The username and password is then passed into the JwtRequest which is one of the classes that are in the model package. It then is passed to the Authentication Manager to process the Authentication Request to determine the validity of the username and password. If the username and password is invalid it throws a BadCredentialsException or if a random error occurs, it will throw an Exception('OtherProblem'). if it passes, the user credentials is passed to the UserDetails class which is then used to generate the JWT Token")
 	@ApiResponse(responseCode = "200", description = "Returns a JWT Token")
@@ -57,18 +60,3 @@ public class JwtController {
 		return ResponseEntity.status(200).body( new JwtResponse(jwt));
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
