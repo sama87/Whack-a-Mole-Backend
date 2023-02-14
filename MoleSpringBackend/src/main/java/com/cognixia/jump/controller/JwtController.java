@@ -15,6 +15,9 @@ import com.cognixia.jump.model.JwtRequest;
 import com.cognixia.jump.model.JwtResponse;
 import com.cognixia.jump.util.JwtUtil;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+
 @RestController
 public class JwtController {
 
@@ -27,6 +30,9 @@ public class JwtController {
 	@Autowired
 	JwtUtil jwtUtil;
 	
+	@Operation(summary = "Authenticates login information",
+			description = "Gets username and password credentials from the login endpoint. The username and password is then passed into the JwtRequest which is one of the classes that are in the model package. It then is passed to the Authentication Manager to process the Authentication Request to determine the validity of the username and password. If the username and password is invalid it throws a BadCredentialsException or if a random error occurs, it will throw an Exception('OtherProblem'). if it passes, the user credentials is passed to the UserDetails class which is then used to generate the JWT Token")
+	@ApiResponse(responseCode = "200", description = "Returns a JWT Token")
 	@PostMapping("/login")
 	public ResponseEntity<?> createJwtToken(@RequestBody JwtRequest request) throws Exception {
 		

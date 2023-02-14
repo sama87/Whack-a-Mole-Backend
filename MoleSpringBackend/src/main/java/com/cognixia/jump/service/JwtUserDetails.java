@@ -6,16 +6,20 @@ import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.cognixia.jump.model.User;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 
 public class JwtUserDetails implements UserDetails {
 	
 	private static final long serialVersionUID = 1l;
 	
+	@Schema(description = "Username for token")
 	private String username;
+	
+	@Schema(description = "Password for token")
 	private String password;
 	private boolean enabled;
 	private List<GrantedAuthority> authorities;
