@@ -3,6 +3,16 @@ package com.cognixia.jump.model;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
@@ -25,18 +35,21 @@ public class User implements Serializable {
 	
 //	@Column(unique = true, nullable = false)
 //	@NotBlank
+	@Schema(description = "Alphanumeric characters", example = "user1")
 	public String username;
 	
 //	@Column(nullable = false)
 //	@NotBlank
+	@Schema(description = "Alphanumberic characters", example = "password1")
 	public String password;
-
+	
+	@Schema(description = "Relationship with the Score entity - OneToMany")
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	public List<Score> scores;
 
 	@Column(columnDefinition = "boolean default true")
 	public boolean enabled;
-
+	
 	public User() {
 	}
 	
