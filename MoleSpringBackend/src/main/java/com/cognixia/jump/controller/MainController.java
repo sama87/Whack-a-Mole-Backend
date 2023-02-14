@@ -14,6 +14,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -148,6 +150,7 @@ public class MainController {
 				newScore.scoreValue = score.score;
 				newScore.difficulty = score.difficulty;
 				newScore.username = score.username;
+				newScore.created = Instant.now().getEpochSecond();
 				byUsername.get().scores.add(newScore);
 				scoreRepo.save(newScore);
 			}

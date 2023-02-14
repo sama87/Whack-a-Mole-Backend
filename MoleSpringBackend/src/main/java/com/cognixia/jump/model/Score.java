@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,29 +12,26 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 
 @Table(name = "score")
 @Entity
-public class Score implements Serializable, Comparable<Score>{
-	
+public class Score implements Serializable, Comparable<Score> {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long id;
-
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
 	public User user;
-	
-//	@NotBlank
+	//	@NotBlank
 //	@Column(nullable = false)
 	public String difficulty;
-	
 	@JsonProperty("score")
 	public Integer scoreValue;
-
 	public String username;
+	public long created;
+
 	public Score() {
 	}
 
@@ -43,7 +39,6 @@ public class Score implements Serializable, Comparable<Score>{
 	public int compareTo(Score other) {
 		return other.scoreValue.compareTo(scoreValue);
 	}
-
 
 
 //	public User getUserID() {
@@ -73,6 +68,6 @@ public class Score implements Serializable, Comparable<Score>{
 //	public Long getScoreID() {
 //		return scoreID;
 //	}
-	
-	
+
+
 }
