@@ -1,22 +1,37 @@
 package com.cognixia.jump.controller;
 
-import com.cognixia.jump.model.*;
-import com.cognixia.jump.repository.ScoreRepository;
-import com.cognixia.jump.repository.UserRepository;
-import com.cognixia.jump.util.JwtUtil;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import com.cognixia.jump.model.JwtRequest;
+import com.cognixia.jump.model.JwtResponse;
+import com.cognixia.jump.model.Score;
+import com.cognixia.jump.model.ScoreDTO;
+import com.cognixia.jump.model.User;
+import com.cognixia.jump.repository.ScoreRepository;
+import com.cognixia.jump.repository.UserRepository;
+import com.cognixia.jump.util.JwtUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 
 @CrossOrigin("*")
@@ -61,7 +76,10 @@ public class MainController {
 //		// 200OK OR 401 Unauthorized
 //		// {jwt: ezlkqwsdfjbnuilwerbnspiofg792364ol;kjhberfasdfc}
 //	}
-
+	@Tag(name = "Create User", description = "Registering new users")
+	@Operation(summary = "Registration for New Users", description = "Takes in a new user's username and password and checks whether both usename or password is null. If both username and password is not null, they are saved in the database, and the user is issued a JWT token")
+	@ApiResponse(responseCode = "201", description = "A new user was created")
+	@ApiResponse(responseCode = "401", description = "one or both credentials were null. User must enter values for username and password")
 	@CrossOrigin("*")
 	@PostMapping("/register")
 	ResponseEntity<?> register(@RequestBody User user) {
@@ -82,8 +100,11 @@ public class MainController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid username or password");
 		}
 	}
-
-
+	
+	@Tag(name = "User scores per level", description = "Scores for each user by level")
+	@Operation(summary = "Retrieves score from a registered user in a given level", description = 	"This method checks if the token exists. The security configuration is then authenticated through the security configuration")
+	@ApiResponse(responseCode = "200", description = "Returns the ok response that the username verified")
+	@ApiResponse(responseCode = "403", description = "Forbidden. the token is invalid/unverified")
 	@CrossOrigin("*")
 	@GetMapping("/scores/{username}/{level}")
 	ResponseEntity<?> score(@PathVariable String username, @PathVariable String level, @RequestHeader(HttpHeaders.AUTHORIZATION) String headers) throws JsonProcessingException {
@@ -104,8 +125,10 @@ public class MainController {
 //		else {
 //			return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Not authorized");
 //		}
-
-
+	
+	@Tag(name = "All scores by level", description = "Gets all scores by level")
+	@Operation(summary = "Gets scores based on levels", description = "The method retrieves information about the scores of a given level. It gets all the scores from the database which prints the high scores of a given level; retrieves high scores for easy, medium or hard")
+	@ApiResponse(responseCode = "200", description = "Data found in score table and prints all high scores of the difficulty")
 	@CrossOrigin("*")
 	@GetMapping("/highscores/{level}")
 	ResponseEntity<?> highscore(@PathVariable String level) throws JsonProcessingException {
@@ -113,7 +136,11 @@ public class MainController {
 		List<Score> scores = scoreRepo.findAll().stream().filter(score -> score.difficulty.equals(level)).toList();
 		return ResponseEntity.status(HttpStatus.OK).body(mapper.writeValueAsString(scores));
 	}
-
+	
+	@Tag(name = "New Score for user", description = "retrieve new achieved score for user")
+	@Operation(summary = "Gets scores of a given user retrieved from JWT", description = "The Score DTO(Data Transfer Object) is an intermediary which holds the value of the score while checking the JWT token. The score then will be passed to the user in the database and pass the new score. The user is saved with a new score and")
+	@ApiResponse(responseCode = "201", description = "User score is submitted")
+	@ApiResponse(responseCode = "400", description = "Bad Request")
 	@CrossOrigin("*")
 	@PostMapping("/score")
 	ResponseEntity<?> submitScore(@RequestBody ScoreDTO score, @RequestHeader(HttpHeaders.AUTHORIZATION) String headers) {
