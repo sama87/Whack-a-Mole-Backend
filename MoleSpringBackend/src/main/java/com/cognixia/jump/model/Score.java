@@ -13,9 +13,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -34,15 +34,13 @@ public class Score implements Serializable, Comparable<Score> {
 	@ManyToOne
 	@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
 	public User user;
-	//	@NotBlank
+		@NotBlank
 //	@Column(nullable = false)
 	@Schema(description = "Difficulty of Whack-a-Mole", example = "easy, medium, hard")
 	public String difficulty;
-	@JsonProperty("score")
-	public Integer scoreValue;
-	
 
-//	@NotBlank
+
+	@NotBlank
 //	@Column(name = "score_value", nullable = false)
 	@Schema(description = "Can be a positive or negative integer")
 	@JsonProperty("score")
@@ -58,35 +56,4 @@ public class Score implements Serializable, Comparable<Score> {
 	public int compareTo(Score other) {
 		return other.scoreValue.compareTo(scoreValue);
 	}
-
-
-//	public User getUserID() {
-//		return user;
-//	}
-//
-//	public void setUserID(User userID) {
-//		this.user = userID;
-//	}
-//
-//	public String getDifficulty() {
-//		return difficulty;
-//	}
-//
-//	public void setDifficulty(String difficulty) {
-//		this.difficulty = difficulty;
-//	}
-//
-//	public Integer getScoreValue() {
-//		return scoreValue;
-//	}
-//
-//	public void setScoreValue(Integer scoreValue) {
-//		this.scoreValue = scoreValue;
-//	}
-//
-//	public Long getScoreID() {
-//		return scoreID;
-//	}
-
-
 }

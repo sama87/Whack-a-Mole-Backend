@@ -20,7 +20,6 @@ import javax.validation.constraints.NotBlank;
 @Entity
 public class User implements Serializable {
 	public User(String username, String password, List<Score> scores) {
-//		this.id = id;
 		this.username = username;
 		this.password = password;
 		this.enabled = true;
@@ -33,13 +32,13 @@ public class User implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long id;
 	
-//	@Column(unique = true, nullable = false)
-//	@NotBlank
+	@Column(unique = true, nullable = false)
+	@NotBlank
 	@Schema(description = "Alphanumeric characters", example = "user1")
 	public String username;
 	
-//	@Column(nullable = false)
-//	@NotBlank
+	@Column(nullable = false)
+	@NotBlank
 	@Schema(description = "Alphanumberic characters", example = "password1")
 	public String password;
 	
@@ -59,36 +58,13 @@ public class User implements Serializable {
 		this.enabled = true;
 	}
 
-//	public Long getId() {
-//		return id;
-//	}
-//
 	public String getUsername() {
 		return username;
 	}
-//
-//	public void setUsername(String username) {
-//		this.username = username;
-//	}
-//
 	public String getPassword() {
 		return password;
 	}
-//
-//	public void setPassword(String password) {
-//		this.password = password;
-//	}
-//
 	public boolean isEnabled() {
 		return enabled;
 	}
-//
-//	public void setEnabled(boolean enabled) {
-//		this.enabled = enabled;
-//	}
-	
-
-	
-	
-
 }
