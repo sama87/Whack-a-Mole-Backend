@@ -21,25 +21,25 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 @Table(name = "score")
 @Entity
-public class Score implements Serializable{
-	
+public class Score implements Serializable, Comparable<Score> {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Size(min = 1)
 	public Long id;
 
-	
 	@Schema(description = "Relationship with the User Entity - ManyToOne")
 
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
 	public User user;
-	
-//	@NotBlank
+	//	@NotBlank
 //	@Column(nullable = false)
 	@Schema(description = "Difficulty of Whack-a-Mole", example = "easy, medium, hard")
 	public String difficulty;
+	@JsonProperty("score")
+	public Integer scoreValue;
 	
 
 //	@NotBlank
@@ -49,8 +49,16 @@ public class Score implements Serializable{
 	public Integer scoreValue;
 	
 	public String username;
+	public long created;
+
 	public Score() {
 	}
+
+	@Override
+	public int compareTo(Score other) {
+		return other.scoreValue.compareTo(scoreValue);
+	}
+
 
 //	public User getUserID() {
 //		return user;
@@ -72,13 +80,13 @@ public class Score implements Serializable{
 //		return scoreValue;
 //	}
 //
-	public void setScoreValue(Integer scoreValue) {
-		this.scoreValue = scoreValue;
-	}
+//	public void setScoreValue(Integer scoreValue) {
+//		this.scoreValue = scoreValue;
+//	}
 //
 //	public Long getScoreID() {
 //		return scoreID;
 //	}
-	
-	
+
+
 }

@@ -5,16 +5,19 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,34 +46,32 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @CrossOrigin("*")
 @RestController
 public class MainController {
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurerAdapter() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("*");
-            }
-        };
-    }
-//	Jwt jwt = new Jwt("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9" + ".eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ" + ".SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c");
+	@Autowired
+	UserRepository userRepo;
+	//	Jwt jwt = new Jwt("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9" + ".eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ" + ".SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c");
 //	String username = "miguel";
 	//	String password = "hashed";
 //	String password = "U2FsdGVkX18HYydxWuCFBLslkZn2a8R51JgWX4TN2cXahyugFL74IUz5" +
 //			"+0a9O8neHKxaWz7Vj9mWrSqJFxX1uLrEcI4FlTbcCfEdq9GdBNL5sXxpq" +
 //			"+1BzLMwkrR+u3RktcKTLZJUaos9f3j2xVq8oA==";
 //	String password = "b390264a923529cdd2012d033c790ea522effb9b15d7800d3db41effe58fd346";
-
-	@Autowired
-	UserRepository userRepo;
 	@Autowired
 	UserDetailsService userDetailsService;
-
 	@Autowired
 	JwtUtil jwtUtil;
 	@Autowired
 	ScoreRepository scoreRepo;
-
 	ObjectMapper mapper = new ObjectMapper();
+
+//	@Bean
+//	public WebMvcConfigurer corsConfigurer() {
+//		return new WebMvcConfigurerAdapter() {
+//			@Override
+//			public void addCorsMappings(CorsRegistry registry) {
+//				registry.addMapping("/**").allowedOrigins("*");
+//			}
+//		};
+//	}
 
 //	@CrossOrigin("*")
 //	@PostMapping("/login")
@@ -106,7 +107,7 @@ public class MainController {
 		ArrayList<Score> scores = new ArrayList<>();
 		if ((null != user.username) && (null != user.password)) {
 			if (userRepo.findByUsername(user.username).isPresent()) {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username "+user.username+" already exists");
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username " + user.username + " already exists");
 			}
 			userRepo.save(new User(user.username, user.password, scores));
 			JwtRequest forNewUser = new JwtRequest(user.username, user.password);
@@ -123,7 +124,7 @@ public class MainController {
 	@ApiResponse(responseCode = "200", description = "Returns the ok response that the username verified")
 	@ApiResponse(responseCode = "403", description = "Forbidden. the token is invalid/unverified")
 	@CrossOrigin("*")
-	@GetMapping("/scores/{username}/{level}")
+	@GetMapping("/scores/{username}/{level}/")
 	ResponseEntity<?> score(@PathVariable String username, @PathVariable String level, @RequestHeader(HttpHeaders.AUTHORIZATION) String headers) throws JsonProcessingException {
 		// request
 		// Authorization header token
@@ -132,7 +133,11 @@ public class MainController {
 		String jwtHeader = headers.split(" ")[1];
 		System.out.println("jwtHeader = " + jwtHeader);
 //		if (jwtHeader.equals(this.jwt.jwt)) {
-		List<Score> byUsername = scoreRepo.findByUsername(username).stream().filter(score -> score.difficulty.equals(level)).toList();
+		List<Score> byUsername = scoreRepo.findByUsername(username).stream()
+		                                  .filter(score -> score.difficulty.equals(level))
+		                                  .sorted(Score::compareTo)
+		                                  .limit(10)
+		                                  .collect(Collectors.toList());
 //			byUsername.forEach(score -> {
 //				System.out.println("score.scoreValue = " + score.scoreValue);
 //
@@ -150,7 +155,11 @@ public class MainController {
 	@GetMapping("/highscores/{level}")
 	ResponseEntity<?> highscore(@PathVariable String level) throws JsonProcessingException {
 		// nothing needed
-		List<Score> scores = scoreRepo.findAll().stream().filter(score -> score.difficulty.equals(level)).toList();
+		List<Score> scores = scoreRepo.findAll().stream()
+		                              .filter(score -> score.difficulty.equals(level))
+                                  .sorted(Score::compareTo)
+                                  .limit(10)
+                                  .collect(Collectors.toList());
 		return ResponseEntity.status(HttpStatus.OK).body(mapper.writeValueAsString(scores));
 	}
 	
@@ -159,14 +168,12 @@ public class MainController {
 	@ApiResponse(responseCode = "201", description = "User score is submitted")
 	@ApiResponse(responseCode = "400", description = "Bad Request")
 	@CrossOrigin("*")
-	@PostMapping("/score")
+	@PostMapping("/score/")
 	ResponseEntity<?> submitScore(@RequestBody ScoreDTO score,
 	                              @RequestHeader(HttpHeaders.AUTHORIZATION)
 	                              String headers) {
 		String jwtHeader = headers.split(" ")[1];
 		System.out.println("jwtHeader = " + jwtHeader);
-//		if (jwtHeader.equals(this.jwt.jwt)) {
-		System.out.println("score = " + score.difficulty);
 		if (null != score) {
 			System.out.println("score.username = " + score.username);
 			Optional<User> byUsername = userRepo.findByUsername(score.username);
@@ -176,6 +183,7 @@ public class MainController {
 				newScore.scoreValue = score.score;
 				newScore.difficulty = score.difficulty;
 				newScore.username = score.username;
+				newScore.created = Instant.now().getEpochSecond();
 				byUsername.get().scores.add(newScore);
 				scoreRepo.save(newScore);
 			}
