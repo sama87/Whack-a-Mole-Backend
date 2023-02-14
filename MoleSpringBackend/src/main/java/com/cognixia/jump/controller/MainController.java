@@ -7,19 +7,14 @@ import com.cognixia.jump.util.JwtUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -45,15 +40,15 @@ public class MainController {
 	ScoreRepository scoreRepo;
 	ObjectMapper mapper = new ObjectMapper();
 
-	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurerAdapter() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**").allowedOrigins("*");
-			}
-		};
-	}
+//	@Bean
+//	public WebMvcConfigurer corsConfigurer() {
+//		return new WebMvcConfigurerAdapter() {
+//			@Override
+//			public void addCorsMappings(CorsRegistry registry) {
+//				registry.addMapping("/**").allowedOrigins("*");
+//			}
+//		};
+//	}
 
 //	@CrossOrigin("*")
 //	@PostMapping("/login")
@@ -100,7 +95,7 @@ public class MainController {
 
 
 	@CrossOrigin("*")
-	@GetMapping("/scores/{username}/{level}")
+	@GetMapping("/scores/{username}/{level}/")
 	ResponseEntity<?> score(@PathVariable String username, @PathVariable String level, @RequestHeader(HttpHeaders.AUTHORIZATION) String headers) throws JsonProcessingException {
 		// request
 		// Authorization header token
@@ -111,6 +106,8 @@ public class MainController {
 //		if (jwtHeader.equals(this.jwt.jwt)) {
 		List<Score> byUsername = scoreRepo.findByUsername(username).stream()
 		                                  .filter(score -> score.difficulty.equals(level))
+		                                  .sorted(Score::compareTo)
+		                                  .limit(10)
 		                                  .collect(Collectors.toList());
 //			byUsername.forEach(score -> {
 //				System.out.println("score.scoreValue = " + score.scoreValue);
@@ -136,14 +133,12 @@ public class MainController {
 	}
 
 	@CrossOrigin("*")
-	@PostMapping("/score")
+	@PostMapping("/score/")
 	ResponseEntity<?> submitScore(@RequestBody ScoreDTO score,
 	                              @RequestHeader(HttpHeaders.AUTHORIZATION)
 	                              String headers) {
 		String jwtHeader = headers.split(" ")[1];
 		System.out.println("jwtHeader = " + jwtHeader);
-//		if (jwtHeader.equals(this.jwt.jwt)) {
-//		System.out.println("score = " + score.difficulty);
 		if (null != score) {
 			System.out.println("score.username = " + score.username);
 			Optional<User> byUsername = userRepo.findByUsername(score.username);
