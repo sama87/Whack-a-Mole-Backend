@@ -17,7 +17,7 @@ import javax.validation.constraints.NotBlank;
 
 @Table(name = "score")
 @Entity
-public class Score implements Serializable{
+public class Score implements Serializable, Comparable<Score>{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,6 +39,13 @@ public class Score implements Serializable{
 	public Score() {
 	}
 
+	@Override
+	public int compareTo(Score other) {
+		return other.scoreValue.compareTo(scoreValue);
+	}
+
+
+
 //	public User getUserID() {
 //		return user;
 //	}
@@ -59,9 +66,9 @@ public class Score implements Serializable{
 //		return scoreValue;
 //	}
 //
-	public void setScoreValue(Integer scoreValue) {
-		this.scoreValue = scoreValue;
-	}
+//	public void setScoreValue(Integer scoreValue) {
+//		this.scoreValue = scoreValue;
+//	}
 //
 //	public Long getScoreID() {
 //		return scoreID;
