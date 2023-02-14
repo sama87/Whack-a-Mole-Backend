@@ -20,73 +20,55 @@ import com.cognixia.jump.filter.JwtFilter;
 @SuppressWarnings("deprecation")
 @Configuration
 public class SecurityConfiguration {
-	
+
 	@Autowired
 	UserDetailsService userDetailsService;
-	
+
 	@Autowired
 	JwtFilter jwtRequestFilter;
-	
+
 	@Bean
 	protected UserDetailsService userDetailsService() {
-		
+
 		return userDetailsService;
 	}
-	
+
 	@Bean
-	protected SecurityFilterChain filterChain( HttpSecurity http) throws Exception {
-		
+	protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
 		http.csrf().disable()
-			.authorizeRequests()
-//			.antMatchers("/api/allscores/{id}/{difficulty}").authenticated()
-//			.antMatchers("/api/allscores/{difficulty}").permitAll()
-//			.antMatchers("/api/allscores").permitAll()
-//			.antMatchers("/authenticate").permitAll()
-//			.antMatchers("/api/user").permitAll()
-//			.anyRequest().authenticated()
-			.anyRequest().permitAll()
-			.and()
-			.sessionManagement().sessionCreationPolicy( SessionCreationPolicy.STATELESS );
-		
-		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class );
-		
+		    .authorizeRequests()
+		    .antMatchers("/scores/{id}/{difficulty}").authenticated()
+		    .antMatchers("/score").authenticated()
+		    .anyRequest().permitAll()
+		    .and()
+		    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+
 		return http.build();
 	}
-	
+
 	@Bean
 	protected AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
 		return authConfig.getAuthenticationManager();
 	}
-	
+
 	@Bean
 	protected PasswordEncoder encoder() {
 		return NoOpPasswordEncoder.getInstance();
 	}
-	
+
 	@Bean
-	protected DaoAuthenticationProvider authenticationProvider () {
-		
+	protected DaoAuthenticationProvider authenticationProvider() {
+
 		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-		
+
 		authProvider.setUserDetailsService(userDetailsService);
-		authProvider.setPasswordEncoder(encoder() );
-		
+		authProvider.setPasswordEncoder(encoder());
+
 		return authProvider;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 
 }
-	
-	
-	
-
-
