@@ -1,5 +1,6 @@
 package com.cognixia.jump.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
@@ -21,7 +22,8 @@ public class Score implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long id;
-	
+
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
 	public User user;
@@ -30,9 +32,6 @@ public class Score implements Serializable{
 //	@Column(nullable = false)
 	public String difficulty;
 	
-//	@NotBlank
-//	@Column(name = "score_value", nullable = false)
-
 	@JsonProperty("score")
 	public Integer scoreValue;
 
